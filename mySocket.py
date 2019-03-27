@@ -15,6 +15,7 @@ class TreadForListenning(Thread):
             try:
                 data = self.conn.recv(1024)
             except ConnectionResetError:
+                self.obj.emit("Erreur")
                 self.listenning = False
             if data != "":
                 self.obj.emit(self.conn,data)
@@ -85,6 +86,7 @@ class MySocket(socket.socket,Eventemmiter,Thread):
                     key_conn.sendall(data)
                 except ConnectionResetError:
                     key_conn.close()
+                    self.obj.emit("Erreur")
                     self.emit(ConnectionResetError,key_conn)
         elif conn in self._threadsList.keys():
             try:
@@ -111,36 +113,36 @@ class MySocket(socket.socket,Eventemmiter,Thread):
         newThread.start()
         self._threadsList[conn] = newThread
 
-if __name__ == "__main__":    
-    # SAV
-    screen = ""
-    import os
-    os.system('cls')
-    def Startup_Message(obj):
-        global screen
-        screen += "Le serveur est démarrer sur \"{};{}\" \n".format(obj.host,obj.port)
-    s = MySocket()
-    s.bind(("localhost",5060))
-    @s.on("connection")
-    def affiche_receve(conn):
-        global screen
-        screen += "Un client c'est connecté ! \n"
-        os.system('cls')
-        print(screen)
-        @s.on(conn)
-        def test(data):
-            # print(data)
-            global screen
-            screen += data.decode("utf8") + "\n"
-            os.system('cls')
-            print(screen)
-    s.listen(5,Startup_Message(s))
-    s.start()
-    data = ""
-    while data != "STOP":
-        os.system('cls')
-        print(screen)
-        data = input()
-        if data !="":
-            s.send_data(data.encode("utf8"))
+# if __name__ == "__main__":    
+#     # SAV
+#     screen = ""
+#     import os
+#     os.system('cls')
+#     def Startup_Message(obj):
+#         global screen
+#         screen += "Le serveur est démarrer sur \"{};{}\" \n".format(obj.host,obj.port)
+#     s = MySocket()
+#     s.bind(("localhost",5060))
+#     @s.on("connection")
+#     def affiche_receve(conn):
+#         global screen
+#         screen += "Un client c'est connecté ! \n"
+#         os.system('cls')
+#         print(screen)
+#         @s.on(conn)
+#         def test(data):
+#             # print(data)
+#             global screen
+#             screen += data.decode("utf8") + "\n"
+#             os.system('cls')
+#             print(screen)
+#     s.listen(5,Startup_Message(s))
+#     s.start()
+#     data = ""
+#     while data != "STOP":
+#         os.system('cls')
+#         print(screen)
+#         data = input()
+#         if data !="":
+#             s.send_data(data.encode("utf8"))
     
