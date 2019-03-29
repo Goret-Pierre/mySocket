@@ -1,5 +1,5 @@
 import socket
-from myEventemitter import Eventemmiter
+from myEventemitter import EventEmitter
 from threading import Thread
 import json
 
@@ -55,7 +55,7 @@ def Myconnect(obj,f,callback = None):
             callback
     return _connect
 
-class MySocket(socket.socket,Eventemmiter,Thread):
+class MySocket(socket.socket,EventEmitter,Thread):
     """
         Faire des commentaires
     """
@@ -65,7 +65,7 @@ class MySocket(socket.socket,Eventemmiter,Thread):
         """
         Thread.__init__(self)
         socket.socket.__init__(self,socket.AF_INET, socket.SOCK_STREAM)
-        Eventemmiter.__init__(self,**kargs)
+        EventEmitter.__init__(self,**kargs)
 
         self.host,self.port = kargs.get("host",None),kargs.get("port",None)
         self.socketType = None

@@ -1,7 +1,22 @@
-class Eventemmiter():
+class EventEmitter():
+    """
+    myEventEmitter supplies an 'eventEmitter' object similar to the 'eventEmitter' from Node.js.
+    it is used to call a function on a event
+    
+    Example
+    =======
+        from myEventEmitter import EventEmitter
+        ee = Eventemitter()
+        @ee.on('event_name')
+        def event_handler():
+            print('Hello world !')
+        ee.emit('event_name')
+        
+        > Hello world !
+    """
     def __init__(self,**kargs):
         self.listenners = {}
-        self.generate_exeptions = kargs.get("generate_exeptions",True)
+        self.generate_exeptions = kargs.get("generate_exeptions",False)
         self.max_listenners = kargs.get("max_listenner",-1) 
     
     def on(self,event_name, f = None):
@@ -60,7 +75,7 @@ class Eventemmiter():
             raise KeyError("{} is not in event list".format(event_name))
 
 if __name__ ==  "__main__":
-    event = Eventemmiter()
+    event = EventEmitter()
     @event.on("salut")
     def bjr(name = None):
         print("Bonjour {} ! :)".format(name))
